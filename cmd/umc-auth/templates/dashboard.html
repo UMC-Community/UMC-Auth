@@ -1,0 +1,21 @@
+{{define "content"}}<h1>Account</h1>
+<p>Signed in as <strong>{{.Username}}</strong> {{if .IsAdmin}}<span class="badge">administrator</span>{{end}}</p>
+<div class="panel">
+<dl class="grid">
+<div class="kv"><dt>Minecraft username</dt><dd>{{.Username}}</dd></div>
+<div class="kv"><dt>UUID</dt><dd><code>{{.UUID}}</code></dd></div>
+<div class="kv"><dt>Formatted UUID</dt><dd><code>{{.PrettyUUID}}</code></dd></div>
+<div class="kv"><dt>Registered</dt><dd>{{.CreatedAt}}</dd></div>
+</dl>
+</div>
+<div class="panel">
+<h2 style="margin-top:0">Use this account in Minecraft</h2>
+<p>Set the authentication server URL to:</p>
+<pre><code>{{.YggdrasilURL}}</code></pre>
+<p class="muted">For authlib-injector, pass it as the value after <code>=</code>:</p>
+<pre><code>-javaagent:authlib-injector.jar={{.YggdrasilURL}}</code></pre>
+</div>
+<form method="post" action="/logout" class="panel">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+<button type="submit">Sign out</button>
+</form>{{end}}

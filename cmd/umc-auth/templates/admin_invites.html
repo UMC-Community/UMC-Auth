@@ -1,0 +1,38 @@
+{{define "content"}}<h1>Invite codes</h1>
+<p>Generate codes and share them through your community. Codes are shown once.</p>
+{{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+{{if .NewCodes}}
+<div class="panel">
+<h2 style="margin-top:0">New codes</h2>
+<p class="muted">Copy these now. Only hashes are stored; they cannot be recovered.</p>
+<div class="codes">{{range .NewCodes}}<div><code>{{.}}</code></div>{{end}}</div>
+</div>
+{{end}}
+<form method="post" action="/admin/invites" class="panel">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+<div class="row">
+<div><label for="count">Codes</label><input id="count" name="count" type="number" min="1" max="50" value="1"></div>
+<div><label for="uses">Uses per code</label><input id="uses" name="uses" type="number" min="1" max="100" value="1"></div>
+<div><label for="days">Valid days</label><input id="days" name="days" type="number" min="1" max="365" value="7"></div>
+</div>
+<label for="note">Note</label>
+<input id="note" name="note" maxlength="200" placeholder="e.g. Discord wave 1">
+<button type="submit">Generate</button>
+</form>
+<div class="panel">
+<h2 style="margin-top:0">Existing codes</h2>
+{{if .Invites}}
+<table>
+<thead><tr><th>Code</th><th>Uses</th><th>Expires</th><th>Note</th><th>Status</th><th></th></tr></thead>
+<tbody>{{range .Invites}}<tr>
+<td><code>{{.CodePrefix}}…</code></td>
+<td>{{.UsedCount}} / {{.MaxUses}}</td>
+<td>{{unix .ExpiresAt}}</td>
+<td>{{.Note}}</td>
+<td>{{if .RevokedAt.Valid}}revoked{{else}}active{{end}}</td>
+<td>{{if not .RevokedAt.Valid}}<form method="post" action="/admin/invites/revoke" class="inline"><input type="hidden" name="csrf" value="{{$.CSRF}}"><input type="hidden" name="id" value="{{.ID}}"><button type="submit">Revoke</button></form>{{end}}</td>
+</tr>{{end}}</tbody>
+</table>
+{{else}}<p class="muted">No invite codes yet.</p>{{end}}
+</div>
+<p><a href="/admin">Back to admin</a></p>{{end}}

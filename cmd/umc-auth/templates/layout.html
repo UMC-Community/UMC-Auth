@@ -1,0 +1,79 @@
+{{define "layout"}}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>{{.ServerName}} · UMC Auth</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --text: #17181c;
+  --muted: #62666f;
+  --line: #dfe2e8;
+  --accent: #1d4ed8;
+  --accent-text: #ffffff;
+  --danger: #b42318;
+  --code-bg: #f0f2f5;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101216;
+    --panel: #171a20;
+    --text: #eef0f3;
+    --muted: #a2a8b4;
+    --line: #2a2f39;
+    --accent: #7aa2ff;
+    --accent-text: #0b1020;
+    --danger: #ff8f86;
+    --code-bg: #0b0d11;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--accent); }
+header { border-bottom: 1px solid var(--line); background: var(--panel); }
+header .inner, main { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+header .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; }
+header .brand { font-weight: 700; color: var(--text); text-decoration: none; }
+header nav { display: flex; gap: 16px; font-size: 14px; }
+main { padding-top: 40px; padding-bottom: 64px; }
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.02em; }
+h2 { font-size: 20px; margin-top: 32px; }
+p, li { color: var(--muted); }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin-top: 24px; }
+label { display: block; font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+button { margin-top: 20px; padding: 10px 16px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-text); font: inherit; font-weight: 600; cursor: pointer; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+code { background: var(--code-bg); padding: 2px 6px; border-radius: 5px; }
+pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+.error { border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent); background: color-mix(in srgb, var(--danger) 10%, transparent); color: var(--danger); border-radius: 8px; padding: 10px 12px; margin-top: 16px; }
+.muted { color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.kv { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+.kv dt { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.kv dd { margin: 4px 0 0; word-break: break-all; }
+.badge { font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 8px 6px; vertical-align: top; }
+th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+.inline { display: inline; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.codes { font-size: 15px; line-height: 1.9; }
+footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+footer .inner { max-width: 760px; margin: 0 auto; padding: 20px; }
+</style>
+</head>
+<body>
+<header><div class="inner">
+<a class="brand" href="/">{{.ServerName}}</a>
+<nav><a href="/">Home</a><a href="/register">Register</a>{{if .LoggedIn}}{{if .IsAdmin}}<a href="/admin">Admin</a>{{end}}<a href="/dashboard">{{.Username}}</a>{{else}}<a href="/login">Sign in</a>{{end}}</nav>
+</div></header>
+<main>{{template "content" .}}</main>
+<footer><div class="inner">Self-hosted Minecraft authentication. Serve it over HTTPS.</div></footer>
+</body>
+</html>{{end}}

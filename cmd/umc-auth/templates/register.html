@@ -1,0 +1,36 @@
+{{define "content"}}<h1>Create an account</h1>
+<p>Choose the Minecraft username and password you will use with the authentication server.</p>
+{{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+<form method="post" action="/register" class="panel">
+<input type="hidden" name="csrf" value="{{.CSRF}}">
+{{if .RequireBootstrap}}
+<label for="bootstrap_token">Bootstrap token</label>
+<input id="bootstrap_token" name="bootstrap_token" autocomplete="off" required>
+{{end}}
+{{if .RequireInvite}}
+<label for="invite">Invite code</label>
+<input id="invite" name="invite" value="{{.InviteInput}}" autocomplete="off" required>
+{{end}}
+<label for="username">Username</label>
+<input id="username" name="username" value="{{.UsernameInput}}" minlength="3" maxlength="16" autocomplete="username" required>
+{{if .RequireEmail}}
+<label for="email">Email</label>
+<input id="email" name="email" type="email" value="{{.EmailInput}}" autocomplete="email" required>
+{{end}}
+<label for="password">Password</label>
+<input id="password" name="password" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+<label for="confirm">Confirm password</label>
+<input id="confirm" name="confirm" type="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+{{if eq .CaptchaMode "turnstile"}}
+<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-action="register"></div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{{end}}
+{{if eq .CaptchaMode "pow"}}
+<input type="hidden" id="pow-token" name="pow_token">
+<input type="hidden" id="pow-nonce" name="pow_nonce">
+<div id="pow-status" class="muted">Preparing proof-of-work challenge…</div>
+<script src="/static/pow.js" defer></script>
+{{end}}
+<button type="submit" id="register-submit">Create account</button>
+</form>
+<p class="muted">Already registered? <a href="/login">Sign in</a>.</p>{{end}}

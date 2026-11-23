@@ -1,0 +1,25 @@
+{{define "content"}}<h1>Users</h1>
+<p class="muted">Most recent {{len .Users}} accounts.</p>
+{{if .Error}}<div class="error">{{.Error}}</div>{{end}}
+<div class="panel">
+{{if .Users}}
+<table>
+<thead><tr><th>User</th><th>UUID</th><th>Email</th><th>Status</th><th></th></tr></thead>
+<tbody>{{range .Users}}<tr>
+<td>{{.Username}}{{if .IsAdmin}} <span class="badge">admin</span>{{end}}</td>
+<td><code>{{.UUID}}</code></td>
+<td>{{if .Email}}{{.Email}} {{if .EmailVerified}}✓{{else}}unverified{{end}}{{else}}—{{end}}</td>
+<td>{{if .Disabled}}disabled{{else}}active{{end}}</td>
+<td>
+{{if not .IsAdmin}}<form method="post" action="/admin/users/status" class="inline">
+<input type="hidden" name="csrf" value="{{$.CSRF}}">
+<input type="hidden" name="id" value="{{.ID}}">
+<input type="hidden" name="disabled" value="{{if .Disabled}}false{{else}}true{{end}}">
+<button type="submit">{{if .Disabled}}Enable{{else}}Disable{{end}}</button>
+</form>{{end}}
+</td>
+</tr>{{end}}</tbody>
+</table>
+{{else}}<p class="muted">No users.</p>{{end}}
+</div>
+<p><a href="/admin">Back to admin</a></p>{{end}}

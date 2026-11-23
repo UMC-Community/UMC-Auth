@@ -1,0 +1,14 @@
+{{define "content"}}<h1>{{.ServerName}}</h1>
+<p>This server provides accounts for Minecraft: Java Edition communities. Players register here
+and receive a stable Minecraft UUID. Game servers authenticate them through the Yggdrasil API.</p>
+<div class="panel">
+<h2 style="margin-top:0">Authentication endpoint</h2>
+<p>Use this URL as the authentication server in authlib-injector or your launcher:</p>
+<pre><code>{{.YggdrasilURL}}</code></pre>
+<p class="muted">The endpoint must be reached over HTTPS in production.</p>
+</div>
+<div class="panel">
+<h2 style="margin-top:0">Get started</h2>
+<p><a href="/register">Create an account</a> or <a href="/login">sign in</a> to see your UUID and
+account details.</p>
+</div>{{end}}

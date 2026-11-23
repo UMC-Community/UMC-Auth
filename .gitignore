@@ -1,0 +1,14 @@
+.env
+data/
+/umc-auth
+umc-auth-image.tar.gz*
+*.log
+web/dist/
+web/node_modules/
+deploy/.env
+deploy/certs/*
+!deploy/certs/.gitkeep
+deploy/acme/*
+!deploy/acme/.gitkeep
+deploy/mail/*
+!deploy/mail/.gitkeep
